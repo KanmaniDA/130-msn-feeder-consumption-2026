@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Algorithm Summary 2026</title>
+<style>
+  :root { --ink:#06142f; --muted:#5e6a7d; --line:#d5dbe7; --blue:#2563eb; --red:#dc2626; --green:#16a34a; }
+  * { box-sizing:border-box; }
+  body { margin:0; color:var(--ink); font-family:Segoe UI, Arial, sans-serif; background:linear-gradient(rgba(245,248,252,.68), rgba(245,248,252,.68)), url('feederback_img.png') center center / cover fixed no-repeat; }
+  header { background:rgba(255,255,255,.84); border-bottom:1px solid var(--line); backdrop-filter:blur(2px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:22px 28px; }
+  header h1 { margin:0; text-align:center; font-size:30px; line-height:1.2; }
+  .nav { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; width:100%; }
+  .nav a { text-decoration:none; color:var(--ink); background:rgba(255,255,255,.90); border:1px solid #cbd3e1; padding:10px 14px; border-radius:7px; white-space:nowrap; }
+  .card { margin:24px 30px; background:rgba(255,255,255,.80); border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+  .top { display:grid; grid-template-columns:1fr 260px; align-items:end; gap:20px; padding:24px 28px 18px; border-bottom:1px solid var(--line); }
+  h2 { margin:0; font-size:26px; }
+  .hint { color:var(--muted); margin-top:8px; font-size:16px; line-height:1.35; }
+  label { font-size:16px; color:var(--ink); display:block; margin-bottom:6px; }
+  select { height:46px; width:100%; border:1px solid #cbd3e1; border-radius:8px; padding:0 12px; background:#fff; font-size:18px; }
+  .stats { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; padding:14px 18px; background:rgba(248,250,252,.76); border-bottom:1px solid var(--line); }
+  .stat { background:rgba(255,255,255,.88); border:1px solid #cbd3e1; border-radius:8px; padding:16px 18px; min-height:112px; }
+  .stat b { display:block; color:var(--muted); font-size:15px; font-weight:600; margin-bottom:12px; }
+  .stat span { font-size:30px; font-weight:850; line-height:1.15; }
+  .chartWrap { position:relative; padding:24px 28px 30px; background:rgba(255,255,255,.66); }
+  canvas { width:100%; height:590px; display:block; }
+  .tooltip { position:absolute; pointer-events:none; background:#087a77; color:#fff; padding:8px 10px; border-radius:4px; font-size:13px; line-height:1.35; transform:translate(10px,-50%); display:none; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,.18); }
+  @media(max-width:1100px){ .top{display:block;} .stats{grid-template-columns:1fr 1fr;} canvas{height:430px;} }
+</style>
+</head>
+<body>
+<header>
+  <h1>130 MSN Feeder Consumption Jan - Mar 2026</h1>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="actual_total_vs_ensemble_dashboard.html">Actual vs Forecast</a>
+    <a href="algorithm_total_bar_summary.html">Algorithm Summary</a>
+    <a href="validation_matrices.html">Validation Matrices</a>
+    <a href="feeder_geo_map_130_msn.html">Feeder Map</a>
+  </nav>
+</header>
+<section class="card">
+  <div class="top">
+    <div>
+      <h2>Algorithm Consolidated Bar Summary</h2>
+      <div class="hint">Import and Export are combined as total energy. Bars compare Actual vs Forecast for each algorithm, and the line shows MAPE.</div>
+    </div>
+    <div><label>Period</label><select id="period"></select></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>Actual total</b><span id="actualTotal">0 kWh</span></div>
+    <div class="stat"><b>Lowest MAPE</b><span id="bestMape">0%</span></div>
+    <div class="stat"><b>Forecast</b><span id="bestForecast">0 kWh</span></div>
+    <div class="stat"><b>Best Accuracy</b><span id="bestAccuracy">0%</span></div>
+  </div>
+  <div class="chartWrap">
+    <canvas id="chart"></canvas>
+    <div id="tooltip" class="tooltip"></div>
+  </div>
+</section>
+<script>
+const rows = [{"Period": "Jan", "Algorithm": "SARIMAX", "Actual_kWh": 54056990.0, "Forecast_kWh": 58650458.883, "Difference_kWh": 4593468.883, "MAPE_%": 8.497456, "Accuracy_%": 91.502544}, {"Period": "Jan", "Algorithm": "Seq2Seq", "Actual_kWh": 54056990.0, "Forecast_kWh": 58556506.066, "Difference_kWh": 4499516.066, "MAPE_%": 8.323653, "Accuracy_%": 91.676347}, {"Period": "Jan", "Algorithm": "HGB", "Actual_kWh": 54056990.0, "Forecast_kWh": 58718553.874, "Difference_kWh": 4661563.874, "MAPE_%": 8.623425, "Accuracy_%": 91.376575}, {"Period": "Jan", "Algorithm": "LightGBM", "Actual_kWh": 54056990.0, "Forecast_kWh": 58801429.35, "Difference_kWh": 4744439.35, "MAPE_%": 8.776736, "Accuracy_%": 91.223264}, {"Period": "Jan", "Algorithm": "Ensemble", "Actual_kWh": 54056990.0, "Forecast_kWh": 58725301.326, "Difference_kWh": 4668311.326, "MAPE_%": 8.635907, "Accuracy_%": 91.364093}, {"Period": "Feb", "Algorithm": "SARIMAX", "Actual_kWh": 54765933.0, "Forecast_kWh": 59900494.415, "Difference_kWh": 5134561.415, "MAPE_%": 9.375466, "Accuracy_%": 90.624534}, {"Period": "Feb", "Algorithm": "Seq2Seq", "Actual_kWh": 54765933.0, "Forecast_kWh": 59815016.692, "Difference_kWh": 5049083.692, "MAPE_%": 9.219388, "Accuracy_%": 90.780612}, {"Period": "Feb", "Algorithm": "HGB", "Actual_kWh": 54765933.0, "Forecast_kWh": 59704247.37, "Difference_kWh": 4938314.37, "MAPE_%": 9.017128, "Accuracy_%": 90.982872}, {"Period": "Feb", "Algorithm": "LightGBM", "Actual_kWh": 54765933.0, "Forecast_kWh": 59807586.977, "Difference_kWh": 5041653.977, "MAPE_%": 9.205821, "Accuracy_%": 90.794179}, {"Period": "Feb", "Algorithm": "Ensemble", "Actual_kWh": 54765933.0, "Forecast_kWh": 59871535.062, "Difference_kWh": 5105602.062, "MAPE_%": 9.322588, "Accuracy_%": 90.677412}, {"Period": "Mar", "Algorithm": "SARIMAX", "Actual_kWh": 69299390.0, "Forecast_kWh": 72427795.129, "Difference_kWh": 3128405.129, "MAPE_%": 4.514333, "Accuracy_%": 95.485667}, {"Period": "Mar", "Algorithm": "Seq2Seq", "Actual_kWh": 69299390.0, "Forecast_kWh": 72331734.508, "Difference_kWh": 3032344.508, "MAPE_%": 4.375716, "Accuracy_%": 95.624284}, {"Period": "Mar", "Algorithm": "HGB", "Actual_kWh": 69299390.0, "Forecast_kWh": 72281356.256, "Difference_kWh": 2981966.256, "MAPE_%": 4.303019, "Accuracy_%": 95.696981}, {"Period": "Mar", "Algorithm": "LightGBM", "Actual_kWh": 69299390.0, "Forecast_kWh": 72233584.361, "Difference_kWh": 2934194.361, "MAPE_%": 4.234084, "Accuracy_%": 95.765916}, {"Period": "Mar", "Algorithm": "Ensemble", "Actual_kWh": 69299390.0, "Forecast_kWh": 72370681.658, "Difference_kWh": 3071291.658, "MAPE_%": 4.431917, "Accuracy_%": 95.568083}, {"Period": "Jan-Mar Overall", "Algorithm": "SARIMAX", "Actual_kWh": 178122313.0, "Forecast_kWh": 190978748.427, "Difference_kWh": 12856435.427, "MAPE_%": 7.217757, "Accuracy_%": 92.782243}, {"Period": "Jan-Mar Overall", "Algorithm": "Seq2Seq", "Actual_kWh": 178122313.0, "Forecast_kWh": 190703257.267, "Difference_kWh": 12580944.267, "MAPE_%": 7.063093, "Accuracy_%": 92.936907}, {"Period": "Jan-Mar Overall", "Algorithm": "HGB", "Actual_kWh": 178122313.0, "Forecast_kWh": 190704157.499, "Difference_kWh": 12581844.499, "MAPE_%": 7.063598, "Accuracy_%": 92.936402}, {"Period": "Jan-Mar Overall", "Algorithm": "LightGBM", "Actual_kWh": 178122313.0, "Forecast_kWh": 190842600.688, "Difference_kWh": 12720287.688, "MAPE_%": 7.141322, "Accuracy_%": 92.858678}, {"Period": "Jan-Mar Overall", "Algorithm": "Ensemble", "Actual_kWh": 178122313.0, "Forecast_kWh": 190967518.046, "Difference_kWh": 12845205.046, "MAPE_%": 7.211452, "Accuracy_%": 92.788548}];
+const periods = ['Jan','Feb','Mar','Jan-Mar Overall'];
+const periodSel = document.getElementById('period');
+const canvas = document.getElementById('chart');
+const ctx = canvas.getContext('2d');
+const tooltip = document.getElementById('tooltip');
+let hit = [];
+periods.forEach(p => periodSel.add(new Option(p, p)));
+periodSel.value = 'Jan-Mar Overall';
+function fmt(n, d=0) { return Number(n||0).toLocaleString('en-IN', {maximumFractionDigits:d, minimumFractionDigits:d}); }
+function kwh(n) { return fmt(n,0) + ' kWh'; }
+function selectedRows() { return rows.filter(r => r.Period === periodSel.value); }
+function resize() { const r=canvas.getBoundingClientRect(); canvas.width=Math.max(900, Math.floor(r.width*devicePixelRatio)); canvas.height=Math.floor(r.height*devicePixelRatio); ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); refresh(); }
+function updateStats() {
+  const data = selectedRows();
+  const best = [...data].sort((a,b)=>a['MAPE_%']-b['MAPE_%'])[0];
+  document.getElementById('actualTotal').textContent = kwh(best.Actual_kWh);
+  document.getElementById('bestMape').textContent = fmt(best['MAPE_%'],3) + '%';
+  document.getElementById('bestForecast').textContent = kwh(best.Forecast_kWh);
+  document.getElementById('bestAccuracy').textContent = fmt(best['Accuracy_%'],3) + '%';
+}
+function drawLegend(x, y) {
+  ctx.font='15px Segoe UI, Arial'; ctx.textAlign='left';
+  ctx.fillStyle='#2563eb'; ctx.fillRect(x,y-10,18,12); ctx.fillStyle='#06142f'; ctx.fillText('Actual', x+26, y);
+  ctx.fillStyle='#dc2626'; ctx.fillRect(x+110,y-10,18,12); ctx.fillStyle='#06142f'; ctx.fillText('Forecast', x+136, y);
+  ctx.strokeStyle='#16a34a'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(x+255,y-4); ctx.lineTo(x+285,y-4); ctx.stroke(); ctx.fillStyle='#16a34a'; ctx.beginPath(); ctx.arc(x+270,y-4,5,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#06142f'; ctx.fillText('MAPE', x+294, y);
+}
+function draw() {
+  const data = selectedRows();
+  const w=canvas.clientWidth, h=canvas.clientHeight;
+  ctx.clearRect(0,0,w,h); hit=[];
+  const pad={l:86,r:82,t:96,b:86};
+  const chartW=w-pad.l-pad.r, chartH=h-pad.t-pad.b;
+  const maxKwh=Math.max(...data.flatMap(r=>[r.Actual_kWh,r.Forecast_kWh]),1)*1.12;
+  const maxMape=Math.max(...data.map(r=>r['MAPE_%']),1)*1.25;
+  const yK=v=>pad.t+chartH*(1-v/maxKwh);
+  const yM=v=>pad.t+chartH*(1-v/maxMape);
+  ctx.fillStyle='#06142f'; ctx.font='24px Segoe UI, Arial'; ctx.textAlign='center';
+  ctx.fillText(periodSel.value + ' - Actual vs Forecast with MAPE', w/2, 34);
+  drawLegend(w/2-210, 66);
+  ctx.strokeStyle='#d7dbe3'; ctx.lineWidth=1; ctx.font='13px Segoe UI, Arial';
+  for(let i=0;i<=5;i++){
+    const y=pad.t+chartH*(i/5); ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y); ctx.stroke();
+    ctx.fillStyle='#06142f'; ctx.textAlign='right'; ctx.fillText(fmt(maxKwh*(1-i/5),0), pad.l-12, y+4);
+    ctx.fillStyle='#16a34a'; ctx.textAlign='left'; ctx.fillText(fmt(maxMape*(1-i/5),1)+'%', w-pad.r+12, y+4);
+  }
+  ctx.save(); ctx.translate(34,h/2); ctx.rotate(-Math.PI/2); ctx.textAlign='center'; ctx.font='18px Segoe UI, Arial'; ctx.fillStyle='#06142f'; ctx.fillText('kWh',0,0); ctx.restore();
+  ctx.save(); ctx.translate(w-28,h/2); ctx.rotate(Math.PI/2); ctx.textAlign='center'; ctx.font='18px Segoe UI, Arial'; ctx.fillStyle='#16a34a'; ctx.fillText('MAPE %',0,0); ctx.restore();
+  const groupW=chartW/data.length, barW=Math.min(40, groupW*0.25);
+  const linePts=[];
+  data.forEach((r,i)=>{
+    const cx=pad.l+groupW*i+groupW/2;
+    [['Actual',r.Actual_kWh,'#2563eb',-barW*0.62],['Forecast',r.Forecast_kWh,'#dc2626',barW*0.62]].forEach(([name,val,color,off])=>{
+      const x=cx+off-barW/2, y=yK(val), bh=pad.t+chartH-y;
+      ctx.fillStyle=color; ctx.fillRect(x,y,barW,bh);
+      hit.push({x,y,w:barW,h:bh,label:r.Algorithm,name,value:val,mape:r['MAPE_%']});
+    });
+    linePts.push({x:cx,y:yM(r['MAPE_%']),r});
+    ctx.fillStyle='#06142f'; ctx.font='15px Segoe UI, Arial'; ctx.textAlign='center'; ctx.fillText(r.Algorithm, cx, h-42);
+  });
+  ctx.strokeStyle='#16a34a'; ctx.lineWidth=3; ctx.beginPath(); linePts.forEach((p,i)=>{ if(i===0) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y); }); ctx.stroke();
+  linePts.forEach(p=>{ ctx.fillStyle='#16a34a'; ctx.beginPath(); ctx.arc(p.x,p.y,5,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#06142f'; ctx.font='12px Segoe UI, Arial'; ctx.textAlign='center'; ctx.fillText(fmt(p.r['MAPE_%'],2)+'%', p.x, p.y-10); });
+  ctx.fillStyle='#06142f'; ctx.font='15px Segoe UI, Arial'; ctx.textAlign='center'; ctx.fillText('Algorithms', (pad.l+w-pad.r)/2, h-16);
+}
+function refresh() { updateStats(); draw(); }
+canvas.addEventListener('mousemove', e=>{
+  const r=canvas.getBoundingClientRect(); const mx=e.clientX-r.left, my=e.clientY-r.top;
+  const b=hit.find(b=>mx>=b.x&&mx<=b.x+b.w&&my>=b.y&&my<=b.y+b.h);
+  if(b){ tooltip.style.display='block'; tooltip.style.left=mx+'px'; tooltip.style.top=my+'px'; tooltip.innerHTML=b.label+'<br>'+b.name+': '+kwh(b.value)+'<br>MAPE: '+fmt(b.mape,3)+'%'; } else tooltip.style.display='none';
+});
+canvas.addEventListener('mouseleave',()=>tooltip.style.display='none');
+periodSel.addEventListener('change', refresh); window.addEventListener('resize', resize);
+resize(); refresh();
+</script>
+</body>
+</html>

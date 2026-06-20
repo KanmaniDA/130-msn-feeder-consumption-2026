@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>130 MSN Feeder Consumption Jan - Mar 2026 - Validation Matrices</title>
+<style>
+  body { margin:0; font-family: Arial, Helvetica, sans-serif; color:#001638; background:#f3f6fb; }
+  header { background:#fff; border-bottom:1px solid #d5deec; padding:24px 36px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+  h1 { margin:0; font-size:30px; }
+  nav { display:flex; gap:12px; flex-wrap:wrap; }
+  nav a { color:#001638; text-decoration:none; border:1px solid #c8d3e5; border-radius:8px; padding:10px 14px; background:#fff; }
+  main { padding:26px 30px 44px; }
+  section { background:#fff; border:1px solid #c8d3e5; border-radius:8px; padding:20px; margin-bottom:22px; }
+  h2 { margin:0 0 8px; font-size:24px; }
+  p { margin:0 0 16px; color:#42536f; }
+  .table-wrap { overflow:auto; border:1px solid #d5deec; border-radius:8px; }
+  table { width:100%; border-collapse:collapse; min-width:720px; }
+  th, td { padding:10px 12px; border-bottom:1px solid #e3e9f3; text-align:right; white-space:nowrap; }
+  th { background:#eef3fb; color:#001638; font-weight:700; position:sticky; top:0; }
+  td:first-child, th:first-child, td:nth-child(2), th:nth-child(2) { text-align:left; }
+  tr.best td { background:#e9fff4; font-weight:700; }
+
+
+/* Feeder background: faded report sheets */
+body{
+  background:
+    linear-gradient(rgba(245,248,252,.68), rgba(245,248,252,.68)),
+    url('feederback_img.png') center center / cover fixed no-repeat !important;
+}
+header{background:rgba(255,255,255,.84) !important; backdrop-filter:blur(2px);}
+section, .panel, .card, .summary-card, .chart-wrap, .table-wrap{background-color:rgba(255,255,255,.80) !important;}
+
+
+
+/* Clean centered title and navigation */
+header {
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:14px !important;
+  padding:22px 28px !important;
+  min-height:auto !important;
+}
+header h1 {
+  width:100% !important;
+  margin:0 !important;
+  text-align:center !important;
+  line-height:1.2 !important;
+  white-space:normal !important;
+}
+header nav, header .nav {
+  position:static !important;
+  transform:none !important;
+  right:auto !important;
+  top:auto !important;
+  display:flex !important;
+  justify-content:center !important;
+  flex-wrap:wrap !important;
+  gap:12px !important;
+  width:100% !important;
+}
+header nav a, header .nav a {
+  white-space:nowrap !important;
+}
+@media(max-width:900px){
+  header h1{font-size:24px !important;}
+  header nav a, header .nav a{padding:9px 11px !important; font-size:15px !important;}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>130 MSN Feeder Consumption Jan - Mar 2026 - Validation Matrices</h1>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="actual_total_vs_ensemble_dashboard.html">Actual vs Forecast</a>
+    <a href="algorithm_total_bar_summary.html">Algorithm Summary</a>
+    <a href="validation_matrices.html">Validation Matrices</a>
+    <a href="feeder_geo_map_130_msn.html">Feeder Map</a>
+  </nav>
+</header>
+<main>
+  <section><h2>Overall Consolidated Validation (%)</h2><p>Jan-Mar overall. One consolidated row per algorithm.</p><div class="table-wrap"><table><thead><tr><th>Algorithm</th><th>MAPE_%</th><th>MAE_%</th><th>RMSE_%</th><th>Accuracy_%</th></tr></thead><tbody><tr><td>SARIMAX</td><td>7.218%</td><td>7.218%</td><td>7.218%</td><td>92.782%</td></tr><tr class="best"><td>Seq2Seq</td><td>7.063%</td><td>7.063%</td><td>7.063%</td><td>92.937%</td></tr><tr><td>HGB</td><td>7.064%</td><td>7.064%</td><td>7.064%</td><td>92.936%</td></tr><tr><td>LightGBM</td><td>7.141%</td><td>7.141%</td><td>7.141%</td><td>92.859%</td></tr><tr><td>Ensemble</td><td>7.211%</td><td>7.211%</td><td>7.211%</td><td>92.789%</td></tr></tbody></table></div></section>
+  <section><h2>Monthwise Consolidated Validation (%)</h2><p>One consolidated row per algorithm for each month.</p><div class="table-wrap"><table><thead><tr><th>Period</th><th>Algorithm</th><th>MAPE_%</th><th>MAE_%</th><th>RMSE_%</th><th>Accuracy_%</th></tr></thead><tbody><tr><td>Jan</td><td>SARIMAX</td><td>8.497%</td><td>8.497%</td><td>8.497%</td><td>91.503%</td></tr><tr class="best"><td>Jan</td><td>Seq2Seq</td><td>8.324%</td><td>8.324%</td><td>8.324%</td><td>91.676%</td></tr><tr><td>Jan</td><td>HGB</td><td>8.623%</td><td>8.623%</td><td>8.623%</td><td>91.377%</td></tr><tr><td>Jan</td><td>LightGBM</td><td>8.777%</td><td>8.777%</td><td>8.777%</td><td>91.223%</td></tr><tr><td>Jan</td><td>Ensemble</td><td>8.636%</td><td>8.636%</td><td>8.636%</td><td>91.364%</td></tr><tr><td>Feb</td><td>SARIMAX</td><td>9.375%</td><td>9.375%</td><td>9.375%</td><td>90.625%</td></tr><tr><td>Feb</td><td>Seq2Seq</td><td>9.219%</td><td>9.219%</td><td>9.219%</td><td>90.781%</td></tr><tr class="best"><td>Feb</td><td>HGB</td><td>9.017%</td><td>9.017%</td><td>9.017%</td><td>90.983%</td></tr><tr><td>Feb</td><td>LightGBM</td><td>9.206%</td><td>9.206%</td><td>9.206%</td><td>90.794%</td></tr><tr><td>Feb</td><td>Ensemble</td><td>9.323%</td><td>9.323%</td><td>9.323%</td><td>90.677%</td></tr><tr><td>Mar</td><td>SARIMAX</td><td>4.514%</td><td>4.514%</td><td>4.514%</td><td>95.486%</td></tr><tr><td>Mar</td><td>Seq2Seq</td><td>4.376%</td><td>4.376%</td><td>4.376%</td><td>95.624%</td></tr><tr><td>Mar</td><td>HGB</td><td>4.303%</td><td>4.303%</td><td>4.303%</td><td>95.697%</td></tr><tr class="best"><td>Mar</td><td>LightGBM</td><td>4.234%</td><td>4.234%</td><td>4.234%</td><td>95.766%</td></tr><tr><td>Mar</td><td>Ensemble</td><td>4.432%</td><td>4.432%</td><td>4.432%</td><td>95.568%</td></tr></tbody></table></div></section>
+</main>
+</body>
+</html>

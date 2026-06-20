@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>130 MSN Feeder Consumption Jan - Mar 2026</title>
+<style>
+
+/* Feeder background: vibrant front sheet */
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Segoe UI,Arial,sans-serif;
+  color:#fff;
+  background:
+    linear-gradient(90deg, rgba(2, 12, 22, .22), rgba(1, 50, 48, .18)),
+    url('feederback_img.png') center center / cover fixed no-repeat;
+}
+.hero{padding:72px 76px;}
+h1{font-size:56px;line-height:1.05;margin:0 0 20px;font-weight:800;text-shadow:0 3px 18px rgba(0,0,0,.42);}
+p{font-size:20px;color:#d6fff7;margin:0 0 44px;text-shadow:0 2px 12px rgba(0,0,0,.38);}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(260px,1fr));gap:18px;max-width:1280px;}
+a.card{display:block;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.38);border-radius:8px;background:rgba(2,18,28,.42);padding:28px 24px;min-height:120px;backdrop-filter:blur(4px);box-shadow:0 18px 42px rgba(0,0,0,.20);}
+a.card:hover{background:rgba(6,56,58,.58);}
+.card b{display:block;font-size:24px;line-height:1.25;}
+@media(max-width:900px){.hero{padding:42px 24px;}h1{font-size:38px}.grid{grid-template-columns:1fr;}}
+
+/* Center front sheet heading */
+.hero{text-align:center;}
+.grid{margin-left:auto;margin-right:auto;}
+</style>
+</head>
+<body>
+  <section class="hero">
+    <h1>130 MSN Feeder Consumption Jan - Mar 2026</h1>
+    <p>Forecast report, actual comparison, and validation matrices.</p>
+    <div class="grid">
+      <a class="card" href="actual_total_vs_ensemble_dashboard.html"><b>Actual vs Forecast 2026</b></a>
+      <a class="card" href="algorithm_total_bar_summary.html"><b>Algorithm Summary 2026</b></a>
+      <a class="card" href="validation_matrices.html"><b>Validation Matrices</b></a>
+      <a class="card" href="feeder_geo_map_130_msn.html"><b>Feeder Geo Map 2026</b></a>
+      <a class="card" href="actual_total_vs_ensemble_graph_data.csv"><b>Actual 2026 vs Forecast Data Summary</b></a>
+      <a class="card" href="actual_total_vs_ensemble_bar_summary_data.csv"><b>Overall Data Summary</b></a>
+    </div>
+  </section>
+</body>
+</html>
