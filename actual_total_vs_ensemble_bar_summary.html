@@ -101,9 +101,9 @@ header nav a, header .nav a {
     </div>
   </div>
   <div class="stats">
-    <div class="stat"><b>Actual total</b><span id="actualTotal">0 kWh</span></div>
-    <div class="stat"><b>Forecast total</b><span id="forecastTotal">0 kWh</span></div>
-    <div class="stat"><b>Difference</b><span id="diffTotal">0 kWh</span></div>
+    <div class="stat"><b>Actual total</b><span id="actualTotal">0 MWh</span></div>
+    <div class="stat"><b>Forecast total</b><span id="forecastTotal">0 MWh</span></div>
+    <div class="stat"><b>Difference</b><span id="diffTotal">0 MWh</span></div>
     <div class="stat"><b>Actual MU</b><span id="actualMU">0 MU</span></div>
     <div class="stat"><b>Forecast MU</b><span id="forecastMU">0 MU</span></div>
   </div>
@@ -124,16 +124,16 @@ function unique(a){ return [...new Set(a)].sort(); }
 function fill(sel, vals){ sel.innerHTML=''; vals.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; sel.appendChild(o); }); }
 function sum(data,key){ return data.reduce((a,r)=>a+(Number(r[key])||0),0); }
 function fmt(n, d=0){ return Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:d, minimumFractionDigits:d}); }
-function kwhFull(n, d=2){ return fmt(n, d) + ' kWh'; }
+function kwhFull(n, d=2){ return fmt(Number(n||0)/1000, d) + ' MWh'; }
 function kwhDisplay(n){
-  const v = Number(n||0);
-  return fmt(v,0) + ' kWh<br><small>' + fmt(v/10000000,2) + ' Crore kWh</small><br><small>' + fmt(v/1000000,2) + ' Million kWh (' + fmt(v/1000000,2) + ' MU)</small>';
+  const v = Number(n||0) / 1000;
+  return fmt(v,2) + ' MWh';
 }
 function muDisplay(n){
   const v = Number(n||0);
-  return fmt(v/1000000,2) + ' MU<br><small>' + fmt(v/1000000,2) + ' Million kWh</small>';
+  return fmt(v/1000000,2) + ' MU';
 }
-function fmtMU(n){ return fmt(Number(n||0)/1000000, 2); }); }
+function fmtMU(n){ return fmt(Number(n||0)/1000000, 2); }
 function groupBy(data,key){ const m=new Map(); data.forEach(r=>{ const k=r[key]; if(!m.has(k)) m.set(k,[]); m.get(k).push(r); }); return m; }
 function updateDays(){
   const month = monthSel.value;
@@ -192,8 +192,8 @@ function draw(){
   ctx.fillStyle='#2563eb'; ctx.beginPath(); ctx.arc(legendX, legendY-5, 6, 0, Math.PI*2); ctx.fill(); ctx.fillText('Actual 2026', legendX+14, legendY);
   ctx.fillStyle='#dc2626'; ctx.beginPath(); ctx.arc(legendX+185, legendY-5, 6, 0, Math.PI*2); ctx.fill(); ctx.fillText('Ensemble Forecast', legendX+199, legendY);
   ctx.strokeStyle='#d7dbe3'; ctx.lineWidth=1; ctx.fillStyle='#06142f'; ctx.font='13px Segoe UI, Arial'; ctx.textAlign='right';
-  for(let i=0;i<=5;i++){ const y=pad.t+chartH*(i/5); ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y); ctx.stroke(); ctx.fillText(fmt(max*(1-i/5)), pad.l-12, y+4); }
-  ctx.save(); ctx.translate(36,h/2); ctx.rotate(-Math.PI/2); ctx.textAlign='center'; ctx.font='18px Segoe UI, Arial'; ctx.fillText('kWh',0,0); ctx.restore();
+  for(let i=0;i<=5;i++){ const y=pad.t+chartH*(i/5); ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y); ctx.stroke(); ctx.fillText(fmt(max*(1-i/5)/1000, 2), pad.l-12, y+4); }
+  ctx.save(); ctx.translate(36,h/2); ctx.rotate(-Math.PI/2); ctx.textAlign='center'; ctx.font='18px Segoe UI, Arial'; ctx.fillText('MWh',0,0); ctx.restore();
   const groupW = chartW / Math.max(labels.length, 1);
   const barW = Math.min(34, groupW * 0.32);
   const yFor=v=>pad.t+chartH*(1-v/max);
@@ -216,7 +216,7 @@ function draw(){
 canvas.addEventListener('mousemove', e=>{
   const r=canvas.getBoundingClientRect(), mx=e.clientX-r.left, my=e.clientY-r.top;
   const b=currentBars.find(b=>mx>=b.x&&mx<=b.x+b.w&&my>=b.y&&my<=b.y+b.h);
-  if(b){ tooltip.style.display='block'; tooltip.style.left=(b.x+b.w)+'px'; tooltip.style.top=b.y+'px'; tooltip.innerHTML=b.label+'<br>'+b.name+': '+fmt(b.value)+' kWh'; } else tooltip.style.display='none';
+  if(b){ tooltip.style.display='block'; tooltip.style.left=(b.x+b.w)+'px'; tooltip.style.top=b.y+'px'; tooltip.innerHTML=b.label+'<br>'+b.name+': '+fmt(b.value/1000,2)+' MWh'; } else tooltip.style.display='none';
 });
 canvas.addEventListener('mouseleave',()=>tooltip.style.display='none');
 fill(msnSel, ['All MSN', ...unique(rows.map(r=>r.MSN))]);

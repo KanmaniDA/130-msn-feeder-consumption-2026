@@ -60,8 +60,8 @@
   <section class="panel">
     <div class="toolbar">
       <div class="metric"><span>Total Feeders</span><b>130</b></div>
-      <div class="metric"><span>Total Forecast</span><b>190,967,518 kWh<br><small>19.10 Crore kWh</small><br><small>190.97 Million kWh (190.97 MU)</small></b></div>
-      <div class="metric"><span>Highest Feeder</span><b>6,658,031 kWh<br><small>0.67 Crore kWh</small><br><small>6.66 Million kWh (6.66 MU)</small></b></div>
+      <div class="metric"><span>Total Forecast</span><b>190,967.52 MWh<br><small>190.97 MU</small></b></div>
+      <div class="metric"><span>Highest Feeder</span><b>6,658.03 MWh<br><small>6.66 MU</small></b></div>
       <div class="filter-card"><label for="msnFilter">MSN</label><select id="msnFilter"><option value="ALL">All MSN</option></select></div>
       <div class="filter-card"><label>Online real map</label><a id="onlineMapBtn" class="map-btn" target="_blank" rel="noopener" href="https://www.openstreetmap.org/#map=14/13.053/80.239">Open selected area</a></div>
     </div>
@@ -86,7 +86,7 @@ const onlineMapBtn = document.getElementById('onlineMapBtn');
 const W=1000, H=650, pad=58;
 const markers = new Map();
 function fmt(n,d=0){ return Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:d,minimumFractionDigits:d}); }
-function kwhDetail(n){ const v=Number(n||0); return fmt(v,2)+' kWh<br><small>'+fmt(v/10000000,2)+' Crore kWh</small><br><small>'+fmt(v/1000000,2)+' Million kWh ('+fmt(v/1000000,2)+' MU)</small>'; }
+function kwhDetail(n){ const v=Number(n||0); return fmt(v/1000,2)+' MWh<br><small>'+fmt(v/1000000,2)+' MU</small>'; }
 function x(lon){ return pad + (lon-meta.lonMin)/(meta.lonMax-meta.lonMin)*(W-pad*2); }
 function y(lat){ return H-pad - (lat-meta.latMin)/(meta.latMax-meta.latMin)*(H-pad*2); }
 function add(tag, attrs, parent=svg){ const el=document.createElementNS('http://www.w3.org/2000/svg',tag); Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v)); parent.appendChild(el); return el; }

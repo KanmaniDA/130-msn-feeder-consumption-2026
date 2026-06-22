@@ -48,9 +48,9 @@
     <div><label>Period</label><select id="period"></select></div>
   </div>
   <div class="stats">
-    <div class="stat"><b>Actual total</b><span id="actualTotal">0 kWh</span></div>
+    <div class="stat"><b>Actual total</b><span id="actualTotal">0 MWh</span></div>
     <div class="stat"><b>Lowest MAPE</b><span id="bestMape">0%</span></div>
-    <div class="stat"><b>Forecast</b><span id="bestForecast">0 kWh</span></div>
+    <div class="stat"><b>Forecast</b><span id="bestForecast">0 MWh</span></div>
     <div class="stat"><b>Best Accuracy</b><span id="bestAccuracy">0%</span></div>
   </div>
   <div class="chartWrap">
@@ -69,7 +69,7 @@ let hit = [];
 periods.forEach(p => periodSel.add(new Option(p, p)));
 periodSel.value = 'Jan-Mar Overall';
 function fmt(n, d=0) { return Number(n||0).toLocaleString('en-IN', {maximumFractionDigits:d, minimumFractionDigits:d}); }
-function kwh(n) { return fmt(n,0) + ' kWh'; }
+function kwh(n) { return fmt(Number(n||0)/1000,2) + ' MWh'; }
 function selectedRows() { return rows.filter(r => r.Period === periodSel.value); }
 function resize() { const r=canvas.getBoundingClientRect(); canvas.width=Math.max(900, Math.floor(r.width*devicePixelRatio)); canvas.height=Math.floor(r.height*devicePixelRatio); ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); refresh(); }
 function updateStats() {
@@ -102,10 +102,10 @@ function draw() {
   ctx.strokeStyle='#d7dbe3'; ctx.lineWidth=1; ctx.font='13px Segoe UI, Arial';
   for(let i=0;i<=5;i++){
     const y=pad.t+chartH*(i/5); ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y); ctx.stroke();
-    ctx.fillStyle='#06142f'; ctx.textAlign='right'; ctx.fillText(fmt(maxKwh*(1-i/5),0), pad.l-12, y+4);
+    ctx.fillStyle='#06142f'; ctx.textAlign='right'; ctx.fillText(fmt(maxKwh*(1-i/5)/1000,2), pad.l-12, y+4);
     ctx.fillStyle='#16a34a'; ctx.textAlign='left'; ctx.fillText(fmt(maxMape*(1-i/5),1)+'%', w-pad.r+12, y+4);
   }
-  ctx.save(); ctx.translate(34,h/2); ctx.rotate(-Math.PI/2); ctx.textAlign='center'; ctx.font='18px Segoe UI, Arial'; ctx.fillStyle='#06142f'; ctx.fillText('kWh',0,0); ctx.restore();
+  ctx.save(); ctx.translate(34,h/2); ctx.rotate(-Math.PI/2); ctx.textAlign='center'; ctx.font='18px Segoe UI, Arial'; ctx.fillStyle='#06142f'; ctx.fillText('MWh',0,0); ctx.restore();
   ctx.save(); ctx.translate(w-28,h/2); ctx.rotate(Math.PI/2); ctx.textAlign='center'; ctx.font='18px Segoe UI, Arial'; ctx.fillStyle='#16a34a'; ctx.fillText('MAPE %',0,0); ctx.restore();
   const groupW=chartW/data.length, barW=Math.min(40, groupW*0.25);
   const linePts=[];
